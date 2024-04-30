@@ -1,34 +1,20 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
-using System.IO;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Basic Method
-// builder.Services.AddHttpClient();
-
-// Named Client Method
-// builder.Services.AddHttpClient("pokemonclient", client =>
-// {
-//     client.BaseAddress = new Uri("https://pokeapi.co/api/v2/pokemon/");
-// });
-
-// Explicit DI Client
-// builder.Services.AddScoped(hc => new HttpClient { BaseAddress = new Uri("https://pokeapi.co/api/v2/pokemon/") });
-
-// Typed Client
-builder.Services.AddHttpClient<PokemonClient>(client =>
+builder.Services.AddHttpClient("pokemonclient", client =>
 {
     client.BaseAddress = new Uri("https://pokeapi.co/api/v2/pokemon/");
 });
 
+builder.Services.AddDbContext<PokemonDbContext>(options =>
+{
+    options.UseSqlite("Data Source=pokemon.db");
+});
+
 
 var app = builder.Build();
-
-var items = new List<Item>
-{
-    new Item("Laptop", 500 ),
-    new Item("Desktop", 750)
-};
 
 // http://localhost:8080/index.html
 app.UseStaticFiles(new StaticFileOptions
@@ -37,52 +23,35 @@ app.UseStaticFiles(new StaticFileOptions
         Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/build"))
 });
 
-app.MapGet("/api/items", () => items);
+app.MapGet("/api/pokemon/{id}", async (IHttpClientFactory httpClientFactory, string id) =>
+{
+    var httpClient = httpClientFactory.CreateClient("pokemonclient");
 
-// Basic Method
-// app.MapGet("/api/pokemon/{id}", async (IHttpClientFactory httpClientFactory, int id) =>
-// {
-//     var request = new HttpRequestMessage(HttpMethod.Get, $"https://pokeapi.co/api/v2/pokemon/{id}");
-//     var httpClient = httpClientFactory.CreateClient();
-//     var response = await httpClient.SendAsync(request);
-//     return await response.Content.ReadFromJsonAsync<Pokemon>();
-// });
+    return await httpClient.GetFromJsonAsync<PokemonResponse>(id);
+});
 
-// Named Client Method
-// app.MapGet("/api/pokemon/{id}", async (IHttpClientFactory httpClientFactory, string id) =>
-// {
-//     var httpClient = httpClientFactory.CreateClient("pokemonclient");
+app.MapGet("/api/pokemon/captured", async (PokemonDbContext context) =>
+{
+    return await context.Pokemon.ToListAsync();
+});
 
-//     return await httpClient.GetFromJsonAsync<Pokemon>(id);
-// });
-
-// Explicit DI Client
-// app.MapGet("/api/pokemon/{id}", async (HttpClient http, string id) =>
-// {
-//     return await http.GetFromJsonAsync<Pokemon>(id);
-// });
-
-// Typed Client
-app.MapGet("/api/pokemon/{id}", async(PokemonClient pokemonClient, string id) => {
-    return await pokemonClient.GetPokemonById(id);
+app.MapGet("/api/pokemon/captured/{id}", async (PokemonDbContext context, int id) =>
+{
+    return await context.Pokemon.FindAsync(id);
 });
 
 app.Run("http://localhost:8080");
 
-public class Item
-{
-    public string name { get; set; }
-    public int price { get; set; }
-
-    public Item(string name, int price)
-    {
-        this.name = name;
-        this.price = price;
-    }
-}
-
 public class Pokemon
 {
+    public int Id { get; set; }
+    public int PokedexId { get; set; }
+    public string Name { get; set; }
+}
+
+public class PokemonResponse
+{
+
     public int Id { get; set; }
     public string Name { get; set; }
 }
@@ -99,4 +68,19 @@ public class PokemonClient
     {
         return await _httpClient.GetFromJsonAsync<Pokemon>(id);
     }
+}
+
+public class PokemonDbContext : DbContext
+{
+    public PokemonDbContext(DbContextOptions<PokemonDbContext> options) : base(options)
+    {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Pokemon>().HasData(new Pokemon { Id = 1, PokedexId = 1, Name = "bulbasaur" });
+        modelBuilder.Entity<Pokemon>().HasData(new Pokemon { Id = 2, PokedexId = 4, Name = "charmander" });
+    }
+
+    public DbSet<Pokemon> Pokemon { get; set; }
 }
