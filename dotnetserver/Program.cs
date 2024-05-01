@@ -13,7 +13,6 @@ builder.Services.AddDbContext<PokemonDbContext>(options =>
     options.UseSqlite("Data Source=pokemon.db");
 });
 
-
 var app = builder.Build();
 
 // http://localhost:8080/index.html
@@ -40,7 +39,8 @@ app.MapGet("/api/pokemon/captured/{id}", async (PokemonDbContext context, int id
     return await context.Pokemon.FindAsync(id);
 });
 
-app.Run("http://localhost:8080");
+var port = app.Environment.IsDevelopment() ? "http://localhost:8080" : null;
+app.Run(port);
 
 public class Pokemon
 {

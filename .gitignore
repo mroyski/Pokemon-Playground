@@ -6,6 +6,7 @@
 /*/.pnp.js
 
 # dotnet
+/dotnetserver/out
 /dotnetserver/bin
 /dotnetserver/obj
 /pokemon-playground.sln
