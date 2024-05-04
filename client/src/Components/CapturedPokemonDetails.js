@@ -7,7 +7,7 @@ const CapturedPokemonDetails = () => {
   const { id } = useParams();
 
   useEffect(() => {
-    fetch(`/api/captured/${id}`)
+    fetch(`/api/pokemon/captured/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setIsLoading(false);

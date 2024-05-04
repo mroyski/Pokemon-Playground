@@ -76,6 +76,11 @@ public class PokemonDbContext : DbContext
     {
     }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        // optionsBuilder.UseInMemoryDatabase("Pokemon");
+    }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Pokemon>().HasData(new Pokemon { Id = 1, PokedexId = 1, Name = "bulbasaur" });
