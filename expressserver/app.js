@@ -7,7 +7,7 @@ const app = express();
 const POKEMON_API_URL = process.env.POKEMON_API_URL;
 const PORT = process.env.PORT || 8080;
 
-let capturedPokemon = [
+const capturedPokemon = [
   {
     id: 1,
     pokemonId: 50,
@@ -20,13 +20,19 @@ let capturedPokemon = [
   },
 ];
 
+const findCapturedPokemonById = (id) => {
+  return capturedPokemon.find((p) => {
+    return p.id === id;
+  });
+};
+
 app.listen(PORT, () => console.log('Server started'));
 
 app.use(express.static('build'));
 
 // ROUTES ========================================================
 // Get all captured pokemon
-app.get('/api/pokemon', async (req, res) => {
+app.get('/api/pokemon/captured', async (req, res) => {
   try {
     res.json(capturedPokemon);
   } catch (error) {
@@ -35,12 +41,18 @@ app.get('/api/pokemon', async (req, res) => {
   }
 });
 
-// Get Pokemon details via external API
-app.get('/api/pokemon/:id', async (req, res) => {
-  const { id } = req.params;
+
+// Get Captured Pokemon details via external API
+app.get('/api/pokemon/captured/:id', async (req, res) => {
+  let { id } = req.params;
+  pokemonId = parseInt(id);
+
+  const findPokemon = findCapturedPokemonById(pokemonId);
 
   try {
-    const response = await axios.get(`${POKEMON_API_URL}/pokemon/${id}`);
+    const response = await axios.get(
+      `${POKEMON_API_URL}/pokemon/${findPokemon.pokemonId}`
+    );
     const pokemonData = response.data;
     const pokemon = {
       name: pokemonData.name,
@@ -55,19 +67,12 @@ app.get('/api/pokemon/:id', async (req, res) => {
   }
 });
 
-// Get Captured Pokemon details via external API
-app.get('/api/captured/:id', async (req, res) => {
-  let { id } = req.params;
-  parsedId = parseInt(id);
-
-  const findPokemon = capturedPokemon.find((p) => {
-    return p.id === parsedId;
-  });
+// Get Pokemon details via external API
+app.get('/api/pokemon/:id', async (req, res) => {
+  const { id } = req.params;
 
   try {
-    const response = await axios.get(
-      `${POKEMON_API_URL}/pokemon/${findPokemon.pokemonId}`
-    );
+    const response = await axios.get(`${POKEMON_API_URL}/pokemon/${id}`);
     const pokemonData = response.data;
     const pokemon = {
       name: pokemonData.name,
