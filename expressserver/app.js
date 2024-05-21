@@ -4,9 +4,13 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 const POKEMON_API_URL = process.env.POKEMON_API_URL;
 const PORT = process.env.PORT || 8080;
 
+// TODO: Set up dynamic ID
 const capturedPokemon = [
   {
     id: 1,
@@ -40,7 +44,6 @@ app.get('/api/pokemon/captured', async (req, res) => {
     res.status(500).json({ error: 'Failed to fetch Pokemon data' });
   }
 });
-
 
 // Get Captured Pokemon details via external API
 app.get('/api/pokemon/captured/:id', async (req, res) => {
@@ -85,4 +88,17 @@ app.get('/api/pokemon/:id', async (req, res) => {
     console.error('Error fetching Pokemon data:', error);
     res.status(500).json({ error: 'Failed to fetch Pokemon data' });
   }
+});
+
+// Add Pokemon to captured list
+app.post('/api/pokemon/catch', async (req, res) => {
+  console.log('REQUEST BODY: ', req.body);
+  capturedPokemon.push({
+    // TODO: Set up dynamic ID
+    id: capturedPokemon.length + 1,
+    pokemonId: req.body.id,
+    name: req.body.name,
+  });
+
+  res.send('ok');
 });

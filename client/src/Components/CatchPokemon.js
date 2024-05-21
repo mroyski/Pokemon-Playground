@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 /*
-    1. click button to trigger a pokemon to spawn
-    2. pokemon details are shown
+    1. click button to trigger a pokemon to spawn - DONE
+    2. pokemon details are shown - DONE
     3. click button to throw a pokeball
     4. pokeball will not capture every time, maybe 50% to start?
     5. pokemon is added to captured pokemon list (in memory for now)
@@ -29,11 +29,12 @@ const pokemonInfo = (pokemon) => {
 const CatchPokemon = () => {
   const [pokemon, setPokemon] = useState();
 
-  const findPokemon = async (id) => {
+  const findPokemon = (id) => {
     fetch(`${POKEMON_API_URL}/pokemon/${randomPokemonNumber()}`)
       .then((res) => res.json())
       .then((data) => {
         const pokemon = {
+          id: data.id,
           name: data.name,
           sprite: data.sprites.front_default,
           stats: data.stats,
@@ -44,9 +45,30 @@ const CatchPokemon = () => {
       });
   };
 
+  const catchPokemon = () => {
+    if (!pokemon) {
+      alert('Find a Pokemon to catch!');
+      return;
+    }
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        id: pokemon.id,
+        name: pokemon.name,
+      }),
+    };
+
+    fetch('/api/pokemon/catch', options);
+  };
+
   return (
     <>
       <button onClick={findPokemon}>Find Pokemon</button>
+      <button onClick={catchPokemon}>Throw Pokeball</button>
       {pokemon && pokemonInfo(pokemon)}
     </>
   );

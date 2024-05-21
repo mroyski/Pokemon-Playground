@@ -9,7 +9,7 @@ import CatchPokemon from './Components/CatchPokemon';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <Root />,
+    element: <CatchPokemon />,
   },
   {
     path: '/captured',
@@ -18,10 +18,6 @@ const router = createBrowserRouter([
   {
     path: '/captured/:id',
     element: <CapturedPokemonDetails />,
-  },
-  {
-    path: '/catch',
-    element: <CatchPokemon />,
   },
 ]);
 
