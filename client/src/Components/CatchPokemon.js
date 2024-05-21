@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 /*
     1. click button to trigger a pokemon to spawn - DONE
@@ -39,6 +40,7 @@ const CatchPokemon = () => {
           sprite: data.sprites.front_default,
           stats: data.stats,
           types: data.types,
+          catpured: false,
         };
 
         setPokemon(pokemon);
@@ -48,6 +50,11 @@ const CatchPokemon = () => {
   const catchPokemon = () => {
     if (!pokemon) {
       alert('Find a Pokemon to catch!');
+      return;
+    }
+
+    if (pokemon.captured) {
+      alert('Pokemon already captured!');
       return;
     }
 
@@ -62,11 +69,14 @@ const CatchPokemon = () => {
       }),
     };
 
-    fetch('/api/pokemon/catch', options);
+    fetch('/api/pokemon/catch', options).then(
+      setPokemon({ ...pokemon, captured: true })
+    );
   };
 
   return (
     <>
+      <Link to={'/captured/'}>Captured Pokemon</Link>
       <button onClick={findPokemon}>Find Pokemon</button>
       <button onClick={catchPokemon}>Throw Pokeball</button>
       {pokemon && pokemonInfo(pokemon)}
