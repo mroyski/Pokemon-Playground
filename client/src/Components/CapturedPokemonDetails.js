@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 const CapturedPokemonDetails = () => {
-  const [isLoading, setIsLoading] = useState(true);
   const [pokemon, setPokemon] = useState([]);
   const { id } = useParams();
 
@@ -10,12 +9,11 @@ const CapturedPokemonDetails = () => {
     fetch(`/api/pokemon/captured/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        setIsLoading(false);
         setPokemon(data);
       });
   }, [id]);
 
-  return <>{isLoading ? <p>Loading...</p> : <>{pokemon.name}</>}</>;
+  return <>{pokemon.name}</>;
 };
 
 export default CapturedPokemonDetails;

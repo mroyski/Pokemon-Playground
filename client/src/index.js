@@ -4,6 +4,7 @@ import Root from './routes/root';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import CapturedPokemon from './Components/CapturedPokemon';
 import CapturedPokemonDetails from './Components/CapturedPokemonDetails';
+import CatchPokemon from './Components/CatchPokemon';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
   {
     path: '/captured/:id',
     element: <CapturedPokemonDetails />,
+  },
+  {
+    path: '/catch',
+    element: <CatchPokemon />,
   },
 ]);
 
