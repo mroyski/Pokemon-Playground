@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Root from './routes/root';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import CapturedPokemon from './Components/CapturedPokemon';
 import CapturedPokemonDetails from './Components/CapturedPokemonDetails';
