@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import CapturedPokemon from './Components/CapturedPokemon';
-import CapturedPokemonDetails from './Components/CapturedPokemonDetails';
-import CatchPokemon from './Components/CatchPokemon';
+import CapturedPokemon from './components/CapturedPokemon';
+import CapturedPokemonDetails from './components/CapturedPokemonDetails';
+import CatchPokemon from './components/CatchPokemon';
 
 const router = createBrowserRouter([
   {
