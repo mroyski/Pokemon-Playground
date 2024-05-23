@@ -22,7 +22,8 @@ const CapturedPokemon = () => {
             <p>
               {index + 1}. {item.name}
             </p>
-            <Link to={`/captured/${item.id}`}>Details</Link>
+            <img src={item.sprite} alt={item.name} />
+            <Link to={`/captured/${item._id}`}>Details</Link>
           </>
         );
       })}

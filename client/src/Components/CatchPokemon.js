@@ -66,6 +66,7 @@ const CatchPokemon = () => {
       body: JSON.stringify({
         id: pokemon.id,
         name: pokemon.name,
+        sprite: pokemon.sprite,
       }),
     };
 
