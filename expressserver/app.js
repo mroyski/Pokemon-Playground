@@ -8,6 +8,7 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('build'));
 
 const POKEMON_API_URL = process.env.POKEMON_API_URL;
 const PORT = process.env.PORT || 8080;
@@ -22,8 +23,6 @@ connect()
   .catch((error) => {
     console.log(error);
   });
-
-app.use(express.static('build'));
 
 // ROUTES ========================================================
 // Get all captured pokemon
