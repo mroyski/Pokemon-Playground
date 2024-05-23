@@ -40,7 +40,6 @@ app.get('/api/pokemon/captured', async (req, res) => {
 // Get Captured Pokemon details
 app.get('/api/pokemon/captured/:id', async (req, res) => {
   let { id } = req.params;
-  pokemonId = parseInt(id);
 
   Pokemon.findById(id)
     .then((pokemon) => {
