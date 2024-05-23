@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const { connect } = require('./database/conn.js');
 const express = require('express');
 const axios = require('axios');
 const app = express();
@@ -30,7 +31,13 @@ const findCapturedPokemonById = (id) => {
   });
 };
 
-app.listen(PORT, () => console.log('Server started'));
+connect()
+  .then(() => {
+    app.listen(PORT, () => console.log('Server started'));
+  })
+  .catch((error) => {
+    console.log('Invalid Database Connection!');
+  });
 
 app.use(express.static('build'));
 
@@ -92,7 +99,7 @@ app.get('/api/pokemon/:id', async (req, res) => {
 
 // Add Pokemon to captured list
 app.post('/api/pokemon/catch', async (req, res) => {
-  console.log('REQUEST BODY: ', req.body);
+  console.log('Caught Pokemon:', req.body);
   capturedPokemon.push({
     // TODO: Set up dynamic ID
     id: capturedPokemon.length + 1,
