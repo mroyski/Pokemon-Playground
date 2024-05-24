@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
     2. pokemon details are shown - DONE
     3. click button to throw a pokeball - DONE
     4. pokemon is added to captured pokemon list (in memory for now) - DONE
-    5. implement useQuery to cache calls to pokemon api
+    5. implement useQuery to cache calls to pokemon api - I tried this but useQuery was not a great fit here
     6. pokeball will not capture every time, maybe 50% to start?
 */
 
