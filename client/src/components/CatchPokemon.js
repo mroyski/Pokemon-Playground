@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 /*
     1. click button to trigger a pokemon to spawn - DONE
     2. pokemon details are shown - DONE
-    3. click button to throw a pokeball
-    4. pokeball will not capture every time, maybe 50% to start?
-    5. pokemon is added to captured pokemon list (in memory for now)
+    3. click button to throw a pokeball - DONE
+    4. pokemon is added to captured pokemon list (in memory for now) - DONE
+    5. implement useQuery to cache calls to pokemon api
+    6. pokeball will not capture every time, maybe 50% to start?
 */
 
 const POKEMON_API_URL = 'https://pokeapi.co/api/v2';
