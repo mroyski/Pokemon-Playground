@@ -1,19 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useFindPokemon } from '../lib/hooks';
 
 /*
     1. click button to trigger a pokemon to spawn - DONE
     2. pokemon details are shown - DONE
     3. click button to throw a pokeball - DONE
     4. pokemon is added to captured pokemon list (in memory for now) - DONE
-    5. implement useQuery to cache calls to pokemon api - I tried this but useQuery was not a great fit here
+    5. implement useQuery to cache calls to pokemon api - DONE
     6. pokeball will not capture every time, maybe 50% to start?
+    7. Show how many pokemon you have total after capture?
 */
 
-const POKEMON_API_URL = 'https://pokeapi.co/api/v2';
-
 const randomPokemonNumber = () => {
-  return Math.floor(Math.random() * 150);
+  return Math.floor(Math.random() * 150 + 1);
 };
 
 const pokemonInfo = (pokemon) => {
@@ -21,7 +21,7 @@ const pokemonInfo = (pokemon) => {
 
   return (
     <ul>
-      <img src={pokemon.sprite} alt={pokemon.name} />
+      <img src={pokemon.sprites.front_default} alt={pokemon.name} />
       <li>{pokemon.name}</li>
       <li>{pokemonTypes}</li>
     </ul>
@@ -29,23 +29,17 @@ const pokemonInfo = (pokemon) => {
 };
 
 const CatchPokemon = () => {
-  const [pokemon, setPokemon] = useState();
+  const [randomId, setRandomId] = useState();
+  const [captured, setCaptured] = useState(false);
+  const { data: pokemon, refetch } = useFindPokemon(randomId);
 
-  const findPokemon = (id) => {
-    fetch(`${POKEMON_API_URL}/pokemon/${randomPokemonNumber()}`)
-      .then((res) => res.json())
-      .then((data) => {
-        const pokemon = {
-          id: data.id,
-          name: data.name,
-          sprite: data.sprites.front_default,
-          stats: data.stats,
-          types: data.types,
-          catpured: false,
-        };
+  useEffect(() => {
+    if (randomId) refetch();
+  }, [refetch, randomId]);
 
-        setPokemon(pokemon);
-      });
+  const handleRefetch = () => {
+    setRandomId(randomPokemonNumber());
+    setCaptured(false);
   };
 
   const catchPokemon = () => {
@@ -54,7 +48,7 @@ const CatchPokemon = () => {
       return;
     }
 
-    if (pokemon.captured) {
+    if (captured) {
       alert('Pokemon already captured!');
       return;
     }
@@ -67,19 +61,17 @@ const CatchPokemon = () => {
       body: JSON.stringify({
         id: pokemon.id,
         name: pokemon.name,
-        sprite: pokemon.sprite,
+        sprite: pokemon.sprites.front_default,
       }),
-    };
+    }
 
-    fetch('/api/pokemon/catch', options).then(
-      setPokemon({ ...pokemon, captured: true })
-    );
+    fetch('/api/pokemon/catch', options).then(setCaptured(true));
   };
 
   return (
     <>
       <Link to={'/captured/'}>Captured Pokemon</Link>
-      <button onClick={findPokemon}>Find Pokemon</button>
+      <button onClick={handleRefetch}>Find Pokemon</button>
       <button onClick={catchPokemon}>Throw Pokeball</button>
       {pokemon && pokemonInfo(pokemon)}
     </>
