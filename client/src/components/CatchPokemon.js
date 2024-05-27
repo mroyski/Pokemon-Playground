@@ -39,7 +39,7 @@ const CatchPokemon = () => {
     if (randomId) refetch();
   }, [refetch, randomId]);
 
-  const handleRefetch = () => {
+  const handleFindPokemon = () => {
     setRandomId(randomPokemonNumber());
     setCaptured(false);
   };
@@ -79,7 +79,7 @@ const CatchPokemon = () => {
   return (
     <>
       <Link to={'/captured/'}>Captured Pokemon</Link>
-      <button onClick={handleRefetch}>Find Pokemon</button>
+      <button onClick={handleFindPokemon}>Find Pokemon</button>
       <button onClick={catchPokemon}>Throw Pokeball</button>
       {pokemon && pokemonInfo(pokemon)}
     </>
