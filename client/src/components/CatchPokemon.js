@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useFindPokemon } from '../lib/hooks';
+import LogContext from '../lib/LogContext';
 
 /*
     1. click button to trigger a pokemon to spawn - DONE
@@ -32,6 +33,7 @@ const CatchPokemon = () => {
   const [randomId, setRandomId] = useState();
   const [captured, setCaptured] = useState(false);
   const { data: pokemon, refetch } = useFindPokemon(randomId);
+  const { logs, setLogs } = useContext(LogContext);
 
   useEffect(() => {
     if (randomId) refetch();
@@ -63,7 +65,13 @@ const CatchPokemon = () => {
         name: pokemon.name,
         sprite: pokemon.sprites.front_default,
       }),
-    }
+    };
+
+    // TODO: extract this logic
+    setLogs((prevLogs) => [
+      `captured a ${pokemon.name}!`,
+      ...prevLogs.slice(0, 5),
+    ]);
 
     fetch('/api/pokemon/catch', options).then(setCaptured(true));
   };
