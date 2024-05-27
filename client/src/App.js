@@ -23,6 +23,7 @@ const router = createBrowserRouter([
   },
 ]);
 
+// TODO: extract this to a component
 const LogView = ({ logData }) => {
   return (
     <ul>
@@ -38,6 +39,7 @@ const App = () => {
     'captured a mankey!',
     'captured a bulbasaur!',
   ]);
+  
   const logValue = { logs, setLogs };
 
   return (
