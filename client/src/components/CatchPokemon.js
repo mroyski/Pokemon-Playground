@@ -33,7 +33,7 @@ const CatchPokemon = () => {
   const [randomId, setRandomId] = useState();
   const [captured, setCaptured] = useState(false);
   const { data: pokemon, refetch } = useFindPokemon(randomId);
-  const { logs, setLogs } = useContext(LogContext);
+  const { setLogs } = useContext(LogContext);
 
   useEffect(() => {
     if (randomId) refetch();
