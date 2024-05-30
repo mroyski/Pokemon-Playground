@@ -6,8 +6,9 @@ export const useFindPokemon = (id) =>
   useQuery({
     enabled: false,
     queryKey: ['pokemon', id],
-    queryFn: async () => {
-      const data = await fetch(`${POKEMON_API_URL}/pokemon/${id}`);
-      return data.json();
+    queryFn: () => {
+      return fetch(`${POKEMON_API_URL}/pokemon/${id}`).then((res) =>
+        res.json()
+      );
     },
   });
