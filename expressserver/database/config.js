@@ -8,6 +8,13 @@ const connect = async () => {
 
   await mongoose.connect(mongoUri, { dbName: 'pokemonDb' });
   console.log(`MongoDB successfully connected to ${mongoUri}`);
+
+  // stop running MongoMemoryServer on restarts with nodemon
+  process.once('SIGUSR2', async () => {
+    await mongoServer.stop();
+    // await mongoose.disconnect();
+    process.kill(process.pid, 'SIGUSR2');
+  });
 };
 
 const seed = async () => {
