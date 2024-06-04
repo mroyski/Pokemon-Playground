@@ -43,7 +43,8 @@ app.MapPost("/api/pokemon/catch", async (PokemonDbContext context, HttpRequest r
 {
     var pokemon = await request.ReadFromJsonAsync<Pokemon>();
     await context.Pokemon.AddAsync(pokemon);
-    return await context.SaveChangesAsync();
+    await context.SaveChangesAsync();
+    return Results.StatusCode(201);
 });
 
 var port = app.Environment.IsDevelopment() ? "http://localhost:8080" : null;
