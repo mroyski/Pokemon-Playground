@@ -13,12 +13,9 @@ app.use('/api/pokemon', PokemonRouter);
 const PORT = process.env.PORT || 8080;
 
 connect()
-  .then(() => {
-    seed();
-  })
-  .then(() => {
-    app.listen(PORT, () => console.log('Server started'));
-  })
+  .then(seed())
   .catch((error) => {
     console.log(error);
   });
+
+app.listen(PORT, () => console.log('Server started'));
