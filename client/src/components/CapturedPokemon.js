@@ -17,11 +17,11 @@ const CapturedPokemon = () => {
       <h1>Pokemon</h1>
       <h2>Count: {pokemon.length}</h2>
       <ul>
-        {pokemon.map((item, index) => {
+        {pokemon.map((item) => {
           return (
-            <li key={item._id}>
+            <li key={item._id || item.id}>
               <img src={item.sprite} alt={item.name} />
-              <Link to={`/captured/${item._id}`}>Details</Link>
+              <Link to={`/captured/${item._id || item.id}`}>Details</Link>
             </li>
           );
         })}

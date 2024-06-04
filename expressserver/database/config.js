@@ -19,7 +19,7 @@ const connect = async () => {
 
 const seed = async () => {
   const pokemon1 = new Pokemon({
-    pokemonId: 1,
+    pokedexId: 1,
     name: 'bulbasaur',
     sprite:
       'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
@@ -28,7 +28,7 @@ const seed = async () => {
   await pokemon1.save();
 
   const pokemon2 = new Pokemon({
-    pokemonId: 56,
+    pokedexId: 56,
     name: 'mankey',
     sprite:
       'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/56.png',

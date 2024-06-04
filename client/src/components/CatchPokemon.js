@@ -73,7 +73,7 @@ const CatchPokemon = () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id: pokemon.id,
+        pokedexId: pokemon.id,
         name: pokemon.name,
         sprite: pokemon.sprites.front_default,
       }),

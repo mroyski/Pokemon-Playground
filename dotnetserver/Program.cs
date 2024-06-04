@@ -39,6 +39,13 @@ app.MapGet("/api/pokemon/captured/{id}", async (PokemonDbContext context, int id
     return await context.Pokemon.FindAsync(id);
 });
 
+app.MapPost("/api/pokemon/catch", async (PokemonDbContext context, HttpRequest request) =>
+{
+    var pokemon = await request.ReadFromJsonAsync<Pokemon>();
+    await context.Pokemon.AddAsync(pokemon);
+    return await context.SaveChangesAsync();
+});
+
 var port = app.Environment.IsDevelopment() ? "http://localhost:8080" : null;
 app.Run(port);
 
@@ -47,6 +54,7 @@ public class Pokemon
     public int Id { get; set; }
     public int PokedexId { get; set; }
     public string Name { get; set; }
+    public string Sprite { get; set; }
 }
 
 public class PokemonResponse
@@ -83,8 +91,8 @@ public class PokemonDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Pokemon>().HasData(new Pokemon { Id = 1, PokedexId = 1, Name = "bulbasaur" });
-        modelBuilder.Entity<Pokemon>().HasData(new Pokemon { Id = 2, PokedexId = 4, Name = "charmander" });
+        modelBuilder.Entity<Pokemon>().HasData(new Pokemon { Id = 1, PokedexId = 1, Name = "bulbasaur", Sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" });
+        modelBuilder.Entity<Pokemon>().HasData(new Pokemon { Id = 2, PokedexId = 4, Name = "charmander", Sprite = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png" });
     }
 
     public DbSet<Pokemon> Pokemon { get; set; }

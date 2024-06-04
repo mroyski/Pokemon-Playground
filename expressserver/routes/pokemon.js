@@ -32,7 +32,7 @@ PokemonRouter.get('/captured/:id', async (req, res) => {
 PokemonRouter.post('/catch', async (req, res) => {
   try {
     const pokemon = new Pokemon({
-      pokemonId: req.body.id,
+      pokedexId: req.body.pokedexId,
       name: req.body.name,
       sprite: req.body.sprite,
     });
