@@ -9,6 +9,7 @@
 /dotnetserver/out
 /dotnetserver/bin
 /dotnetserver/obj
+/dotnetserver/pokemon.db
 /pokemon-playground.sln
 
 # testing
