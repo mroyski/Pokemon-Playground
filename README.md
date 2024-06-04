@@ -41,6 +41,7 @@ $ cd dotnetserver/
 #### Build
 ```console
 $ dotnet build
+$ dotnet ef database update
 ```
 #### Run Development Server
 ```console
