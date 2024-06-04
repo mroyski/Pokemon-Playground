@@ -79,7 +79,7 @@ const CatchPokemon = () => {
       }),
     };
 
-    // TODO: extract this logic
+    // TODO: extract this logic and only use when fetch below is successful
     setLogs((prevLogs) => [
       { timestamp: Date.now(), data: `captured a ${pokemon.name}!` },
       ...prevLogs.slice(0, 5),
