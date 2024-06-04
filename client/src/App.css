@@ -1,0 +1,9 @@
+@font-face {
+    font-family: "pokemon";   /*Can be any text*/
+    src: local("AirbnbCerealLight"),
+      url("./fonts/PokemonGb-RAeo.ttf") format("truetype");
+  }
+
+* {
+    font-family: 'pokemon'
+}

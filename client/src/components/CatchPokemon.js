@@ -18,6 +18,18 @@ const randomPokemonNumber = () => {
 };
 
 const pokemonInfo = (pokemon) => {
+  if (!pokemon) {
+    return (
+      <ul>
+        <img
+          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png"
+          alt="no-pokemon"
+        />
+        <li>?</li>
+        <li>?</li>
+      </ul>
+    );
+  }
   const pokemonTypes = pokemon.types.map((t) => t.type.name).join('/');
 
   return (
@@ -69,7 +81,7 @@ const CatchPokemon = () => {
 
     // TODO: extract this logic
     setLogs((prevLogs) => [
-      `captured a ${pokemon.name}!`,
+      { timestamp: Date.now(), data: `captured a ${pokemon.name}!` },
       ...prevLogs.slice(0, 5),
     ]);
 
@@ -81,7 +93,7 @@ const CatchPokemon = () => {
       <Link to={'/captured/'}>Captured Pokemon</Link>
       <button onClick={handleFindPokemon}>Find Pokemon</button>
       <button onClick={catchPokemon}>Throw Pokeball</button>
-      {pokemon && pokemonInfo(pokemon)}
+      {pokemonInfo(pokemon)}
     </>
   );
 };

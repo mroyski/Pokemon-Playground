@@ -6,6 +6,7 @@ import CapturedPokemonDetails from './components/CapturedPokemonDetails';
 import CatchPokemon from './components/CatchPokemon';
 import Logs from './components/Logs';
 import LogContext from './lib/LogContext';
+import './App.css'
 
 const queryClient = new QueryClient();
 
@@ -26,8 +27,8 @@ const router = createBrowserRouter([
 
 const App = () => {
   const [logs, setLogs] = useState([
-    'captured a mankey!',
-    'captured a bulbasaur!',
+    { timestamp: Date.now() - 1000, data: 'captured a mankey!' },
+    { timestamp: Date.now() - 5000, data: 'captured a bulbasaur!' },
   ]);
 
   const logContextValue = { logs, setLogs };
