@@ -12,7 +12,7 @@ const connect = async () => {
   // stop running MongoMemoryServer on restarts with nodemon
   process.once('SIGUSR2', async () => {
     await mongoServer.stop();
-    // await mongoose.disconnect();
+    await mongoose.disconnect();
     process.kill(process.pid, 'SIGUSR2');
   });
 };
