@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 import CapturedPokemon from './components/CapturedPokemon';
 import CapturedPokemonDetails from './components/CapturedPokemonDetails';
 import CatchPokemon from './components/CatchPokemon';
+import Login from './components/Login';
 import Logs from './components/Logs';
 import LogContext from './lib/LogContext';
-import './App.css'
+import './App.css';
 
 const queryClient = new QueryClient();
 
@@ -22,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: '/captured/:id',
     element: <CapturedPokemonDetails />,
+  },
+  {
+    path: '/login',
+    element: <Login />,
   },
 ]);
 

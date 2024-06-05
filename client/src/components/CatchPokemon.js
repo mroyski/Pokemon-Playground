@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useFindPokemon } from '../lib/hooks';
 import LogContext from '../lib/LogContext';
 
@@ -90,7 +89,6 @@ const CatchPokemon = () => {
 
   return (
     <>
-      <Link to={'/captured/'}>Captured Pokemon</Link>
       <button onClick={handleFindPokemon}>Find Pokemon</button>
       <button onClick={catchPokemon}>Throw Pokeball</button>
       {pokemonInfo(pokemon)}
