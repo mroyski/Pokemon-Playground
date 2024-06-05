@@ -24,6 +24,7 @@ const Login = () => {
         const error = await response.json();
         throw new Error(error.message);
       }
+      setErrorMessage(null);
       const data = await response.json();
       localStorage.setItem('token', data.token);
     } catch (error) {
@@ -33,7 +34,7 @@ const Login = () => {
 
   return (
     <>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+      {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
       <form onSubmit={login}>
         <input
           placeholder="username"

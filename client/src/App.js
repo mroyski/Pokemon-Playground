@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   createBrowserRouter,
-  Link,
   Outlet,
   RouterProvider,
 } from 'react-router-dom';
@@ -12,25 +11,10 @@ import CatchPokemon from './components/CatchPokemon';
 import Login from './components/Login';
 import Logs from './components/Logs';
 import LogContext from './lib/LogContext';
+import Navbar from './components/Navbar';
 import './App.css';
 
 const queryClient = new QueryClient();
-
-const Navbar = () => {
-  return (
-    <ul>
-      <li>
-        <Link to={'/login/'}>Login</Link>
-      </li>
-      <li>
-        <Link to={'/'}>Catch</Link>
-      </li>
-      <li>
-        <Link to={'/captured/'}>Captured</Link>
-      </li>
-    </ul>
-  );
-};
 
 const AppLayout = () => {
   return (

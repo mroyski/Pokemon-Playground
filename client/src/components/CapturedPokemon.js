@@ -19,9 +19,9 @@ const CapturedPokemon = () => {
       <ul>
         {pokemon.map((item) => {
           return (
-            <li key={item.id}>
+            <li key={item.id || item._id}>
               <img src={item.sprite} alt={item.name} />
-              <Link to={`/captured/${item.id}`}>Details</Link>
+              <Link to={`/captured/${item.id || item._id}`}>Details</Link>
             </li>
           );
         })}
