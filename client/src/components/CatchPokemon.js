@@ -84,7 +84,7 @@ const CatchPokemon = () => {
       .then(setCaptured(true))
       .then(
         setLogs((prevLogs) => [
-          { timestamp: Date.now(), data: `captured a ${pokemon.name}!` },
+          { timestamp: Date.now(), data: `caught a ${pokemon.name}!` },
           ...prevLogs.slice(0, 5),
         ])
       );
@@ -94,6 +94,9 @@ const CatchPokemon = () => {
     <>
       <button onClick={handleFindPokemon}>Find Pokemon</button>
       <button onClick={catchPokemon}>Throw Pokeball</button>
+      {captured && (
+        <div style={{ color: 'green' }}>{`You caught a ${pokemon.name}!`}</div>
+      )}
       {pokemonInfo(pokemon)}
     </>
   );
