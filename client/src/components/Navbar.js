@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Logout from '../components/Logout';
 
 const NavLink = ({ path, text }) => {
   return (
@@ -18,6 +19,7 @@ const Navbar = () => {
       <NavLink path="/" text="Catch" />
       <NavLink path="/captured" text="Captured" />
       <NavLink path="/register" text="Register" />
+      <Logout />
     </div>
   );
 };
