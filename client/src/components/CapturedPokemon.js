@@ -5,7 +5,7 @@ const CapturedPokemon = () => {
   const [pokemon, setPokemon] = useState([]);
 
   useEffect(() => {
-    fetch('/api/pokemon/captured')
+    fetch('/api/pokemon/captured/')
       .then((res) => res.json())
       .then((data) => {
         setPokemon(data);

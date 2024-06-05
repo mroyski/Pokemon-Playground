@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useFindPokemon } from '../lib/hooks';
-import LogContext from '../lib/LogContext';
+import { LogContext } from '../lib/LogContext';
 
 /*
     1. click button to trigger a pokemon to spawn - DONE

@@ -6,7 +6,9 @@ const POKEMON_API_URL = process.env.POKEMON_API_URL;
 
 // Get all captured pokemon
 PokemonRouter.get('/captured', async (req, res) => {
-  Pokemon.find({})
+  const { user } = req.params;
+
+  Pokemon.find({ user: user })
     .then((data) => {
       res.json(data);
     })
