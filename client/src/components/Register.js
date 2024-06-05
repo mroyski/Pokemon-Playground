@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
-const Login = () => {
+const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [registered, setRegistered] = useState(false);
 
-  const login = async (e) => {
+  const register = async (e) => {
     e.preventDefault();
     const options = {
       method: 'POST',
@@ -21,15 +21,13 @@ const Login = () => {
     };
 
     try {
-      const response = await fetch('/api/auth/login', options);
+      const response = await fetch('/api/auth/register', options);
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.message);
       }
       setErrorMessage(null);
-      const data = await response.json();
-      localStorage.setItem('token', data.token);
-      setLoggedIn(true);
+      setRegistered(true);
     } catch (error) {
       setErrorMessage(error.message);
     }
@@ -37,9 +35,9 @@ const Login = () => {
 
   return (
     <>
-      <h1>Login</h1>
+      <h1>Register</h1>
       {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
-      <form onSubmit={login}>
+      <form onSubmit={register}>
         <input
           placeholder="username"
           onChange={(e) => setUsername(e.target.value)}
@@ -51,11 +49,11 @@ const Login = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Login</button>
+        <button type="submit">Register</button>
       </form>
-      {loggedIn && <Navigate to="/captured" />}
+      {registered && <Navigate to="/login" />}
     </>
   );
 };
 
-export default Login;
+export default Register;

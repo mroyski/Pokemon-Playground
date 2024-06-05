@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 const CapturedPokemon = () => {
   const [pokemon, setPokemon] = useState([]);
+  const [username, setUsername] = useState();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -14,13 +15,14 @@ const CapturedPokemon = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        setPokemon(data);
+        setPokemon(data.pokemon);
+        setUsername(data.username);
       });
   }, []);
 
   return (
     <>
-      <h1>Pokemon</h1>
+      <h1>{`${username}'s Pokemon`}</h1>
       <h2>Count: {pokemon.length}</h2>
       <ul>
         {pokemon.map((item) => {

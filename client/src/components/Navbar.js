@@ -17,6 +17,7 @@ const Navbar = () => {
       <NavLink path="/login" text="Login" />
       <NavLink path="/" text="Catch" />
       <NavLink path="/captured" text="Captured" />
+      <NavLink path="/register" text="Register" />
     </div>
   );
 };

@@ -25,8 +25,8 @@ const verifyToken = (req, res, next) => {
 // Get all captured pokemon
 PokemonRouter.get('/captured', verifyToken, async (req, res) => {
   Pokemon.find({ user: req.user })
-    .then((data) => {
-      res.json(data);
+    .then((pokemon) => {
+      res.json({ pokemon: pokemon, username: req.user.username });
     })
     .catch((error) => {
       res.json(error);

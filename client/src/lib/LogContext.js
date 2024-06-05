@@ -3,10 +3,7 @@ import { createContext, useState } from 'react';
 export const LogContext = createContext();
 
 export const LogProvider = ({ children }) => {
-  const [logs, setLogs] = useState([
-    { timestamp: Date.now() - 1000, data: 'captured a mankey!' },
-    { timestamp: Date.now() - 5000, data: 'captured a bulbasaur!' },
-  ]);
+  const [logs, setLogs] = useState([]);
 
   return (
     <LogContext.Provider value={{ logs, setLogs }}>
