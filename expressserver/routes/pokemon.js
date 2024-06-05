@@ -1,14 +1,30 @@
 const axios = require('axios');
 const PokemonRouter = require('express').Router();
 const Pokemon = require('../models/pokemon.js');
+const jwt = require('jsonwebtoken');
 
 const POKEMON_API_URL = process.env.POKEMON_API_URL;
 
-// Get all captured pokemon
-PokemonRouter.get('/captured', async (req, res) => {
-  const { user } = req.params;
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
 
-  Pokemon.find({ user: user })
+  if (!token) {
+    return res.sendStatus(401);
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.sendStatus(403);
+    }
+    req.user = decoded.user;
+    next();
+  });
+};
+
+// Get all captured pokemon
+PokemonRouter.get('/captured', verifyToken, async (req, res) => {
+  Pokemon.find({ user: req.user })
     .then((data) => {
       res.json(data);
     })

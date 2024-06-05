@@ -16,7 +16,7 @@ AuthRouter.post('/login', async (req, res) => {
   if (!validPassword)
     return res.status(400).send({ message: 'Invalid username or password' });
 
-  const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
+  const token = jwt.sign({ user: user }, process.env.JWT_SECRET, {
     expiresIn: '1h',
   });
 

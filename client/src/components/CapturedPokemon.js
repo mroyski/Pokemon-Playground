@@ -5,7 +5,13 @@ const CapturedPokemon = () => {
   const [pokemon, setPokemon] = useState([]);
 
   useEffect(() => {
-    fetch('/api/pokemon/captured/')
+    const token = localStorage.getItem('token');
+    fetch('/api/pokemon/captured/', {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setPokemon(data);
