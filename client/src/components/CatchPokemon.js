@@ -66,10 +66,12 @@ const CatchPokemon = () => {
       return;
     }
 
+    const token = localStorage.getItem('token');
     const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         pokedexId: pokemon.id,
@@ -78,13 +80,14 @@ const CatchPokemon = () => {
       }),
     };
 
-    // TODO: extract this logic and only use when fetch below is successful
-    setLogs((prevLogs) => [
-      { timestamp: Date.now(), data: `captured a ${pokemon.name}!` },
-      ...prevLogs.slice(0, 5),
-    ]);
-
-    fetch('/api/pokemon/catch', options).then(setCaptured(true));
+    fetch('/api/pokemon/catch', options)
+      .then(setCaptured(true))
+      .then(
+        setLogs((prevLogs) => [
+          { timestamp: Date.now(), data: `captured a ${pokemon.name}!` },
+          ...prevLogs.slice(0, 5),
+        ])
+      );
   };
 
   return (

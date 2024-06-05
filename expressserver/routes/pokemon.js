@@ -34,7 +34,7 @@ PokemonRouter.get('/captured', verifyToken, async (req, res) => {
 });
 
 // Get Captured Pokemon details
-PokemonRouter.get('/captured/:id', async (req, res) => {
+PokemonRouter.get('/captured/:id', verifyToken, async (req, res) => {
   const { id } = req.params;
 
   Pokemon.findById(id)
@@ -47,12 +47,13 @@ PokemonRouter.get('/captured/:id', async (req, res) => {
 });
 
 // Catch a Pokemon
-PokemonRouter.post('/catch', async (req, res) => {
+PokemonRouter.post('/catch', verifyToken, async (req, res) => {
   try {
     const pokemon = new Pokemon({
       pokedexId: req.body.pokedexId,
       name: req.body.name,
       sprite: req.body.sprite,
+      user: req.user,
     });
 
     await pokemon.save();

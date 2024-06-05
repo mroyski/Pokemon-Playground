@@ -6,10 +6,10 @@ const CapturedPokemon = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    fetch('/api/pokemon/captured/', {
+    fetch('/api/pokemon/captured', {
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
     })
       .then((res) => res.json())
