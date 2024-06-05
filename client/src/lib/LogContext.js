@@ -1,12 +1,5 @@
 import { createContext, useState } from 'react';
 
-// const LogContext = createContext({
-//   logs: [],
-//   setLogs: () => {},
-// });
-
-// export default LogContext;
-
 export const LogContext = createContext();
 
 export const LogProvider = ({ children }) => {

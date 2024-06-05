@@ -3,7 +3,7 @@ import { LogContext } from '../lib/LogContext';
 const LOG_SIZE = 20;
 
 const Logs = () => {
-  const { logs, setLogs } = useContext(LogContext);
+  const { logs } = useContext(LogContext);
   const recentLogs = logs.slice(0, LOG_SIZE);
   const containerRef = useRef(null);
 
