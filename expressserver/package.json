@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon app",
     "start": "node app",
-    "test": "mocha 'test/**/*.test.js'"
+    "test": "NODE_ENV=test mocha 'test/**/*.test.js'"
   },
   "author": "",
   "license": "ISC",
