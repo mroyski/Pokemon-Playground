@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useLogs } from './LogContext';
 import { useLocalStorage } from './hooks';
 
@@ -8,7 +8,17 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState();
+  const [token, setToken] = useState();
+  const [loaded, setLoaded] = useState(false);
   const { clearLogs } = useLogs();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    const user = localStorage.getItem('user');
+    setToken(storedToken);
+    setUser(user);
+    setLoaded(true);
+  }, []);
 
   const login = async ({ username, password }) => {
     const options = {
@@ -31,7 +41,9 @@ export const AuthProvider = ({ children }) => {
       clearLogs();
       const data = await response.json();
       localStorage.setItem('token', data.token);
+      localStorage.setItem('user', data.username);
       setUser(data.username);
+      setToken(data.token);
       return { success: true };
     } catch (error) {
       console.log(error);
@@ -41,7 +53,9 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
+    setToken(null);
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     clearLogs();
   };
 
@@ -49,6 +63,8 @@ export const AuthProvider = ({ children }) => {
     () => ({
       login,
       logout,
+      loaded,
+      token,
       user,
     }),
     [user]

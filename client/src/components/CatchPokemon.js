@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useFindPokemon } from '../lib/hooks';
 import { useLogs } from '../lib/LogContext';
+import { useAuth } from '../lib/AuthContext';
 
 /*
     1. click button to trigger a pokemon to spawn - DONE
@@ -44,8 +45,8 @@ const CatchPokemon = () => {
   const [randomId, setRandomId] = useState();
   const [captured, setCaptured] = useState(false);
   const { data: pokemon, refetch } = useFindPokemon(randomId);
-  // const { setLogs } = useContext(LogContext);
   const { addCapturedLog } = useLogs();
+  const { logout } = useAuth();
 
   useEffect(() => {
     if (randomId) refetch();
@@ -81,9 +82,21 @@ const CatchPokemon = () => {
       }),
     };
 
+    // TODO: create custom fetch to handle unauthorized cases and logout
+    // also need to add in captured pokemon list!
     fetch('/api/pokemon/catch', options)
+      .then((res) => {
+        if (res.status === 403) {
+          console.log(res.status);
+          logout();
+          throw new Error('Unauthorized');
+        }
+      })
       .then(setCaptured(true))
-      .then(addCapturedLog(pokemon.name));
+      .then(addCapturedLog(pokemon.name))
+      .catch(error => {
+        console.log(error);
+      });
   };
 
   return (
