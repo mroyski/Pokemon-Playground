@@ -28,7 +28,6 @@ AuthRouter.post('/login', async (req, res) => {
   }
 });
 
-// TODO: finish this route
 AuthRouter.post('/register', async (req, res) => {
   try {
     const { username, password } = req.body;

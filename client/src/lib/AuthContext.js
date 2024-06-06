@@ -2,6 +2,8 @@ import { createContext, useContext, useMemo, useState } from 'react';
 import { useLogs } from './LogContext';
 import { useLocalStorage } from './hooks';
 
+// TODO: use useLocalStorage for handling localstorage operations
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
