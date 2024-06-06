@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const AuthRouter = require('./routes/auth.js');
 const PokemonRouter = require('./routes/pokemon.js');
 const { connect, seed } = require('./database/config.js');
 const express = require('express');
@@ -9,6 +10,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('build'));
 app.use('/api/pokemon', PokemonRouter);
+app.use('/api/auth', AuthRouter);
 
 const PORT = process.env.PORT || 8080;
 

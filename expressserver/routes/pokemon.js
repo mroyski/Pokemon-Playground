@@ -1,14 +1,32 @@
 const axios = require('axios');
 const PokemonRouter = require('express').Router();
 const Pokemon = require('../models/pokemon.js');
+const jwt = require('jsonwebtoken');
 
 const POKEMON_API_URL = process.env.POKEMON_API_URL;
 
+const verifyToken = (req, res, next) => {
+  const authHeader = req.headers['authorization'];
+  const token = authHeader && authHeader.split(' ')[1];
+
+  if (!token) {
+    return res.sendStatus(401);
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.sendStatus(403);
+    }
+    req.user = decoded.user;
+    next();
+  });
+};
+
 // Get all captured pokemon
-PokemonRouter.get('/captured', async (req, res) => {
-  Pokemon.find({})
-    .then((data) => {
-      res.json(data);
+PokemonRouter.get('/captured', verifyToken, async (req, res) => {
+  Pokemon.find({ user: req.user })
+    .then((pokemon) => {
+      res.json({ pokemon: pokemon, username: req.user.username });
     })
     .catch((error) => {
       res.json(error);
@@ -16,7 +34,7 @@ PokemonRouter.get('/captured', async (req, res) => {
 });
 
 // Get Captured Pokemon details
-PokemonRouter.get('/captured/:id', async (req, res) => {
+PokemonRouter.get('/captured/:id', verifyToken, async (req, res) => {
   const { id } = req.params;
 
   Pokemon.findById(id)
@@ -29,12 +47,13 @@ PokemonRouter.get('/captured/:id', async (req, res) => {
 });
 
 // Catch a Pokemon
-PokemonRouter.post('/catch', async (req, res) => {
+PokemonRouter.post('/catch', verifyToken, async (req, res) => {
   try {
     const pokemon = new Pokemon({
       pokedexId: req.body.pokedexId,
       name: req.body.name,
       sprite: req.body.sprite,
+      user: req.user,
     });
 
     await pokemon.save();
