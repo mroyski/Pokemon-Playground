@@ -94,9 +94,9 @@ const CatchPokemon = () => {
     <>
       <button onClick={handleFindPokemon}>Find Pokemon</button>
       <button onClick={catchPokemon}>Throw Pokeball</button>
-      {captured && (
-        <div style={{ color: 'green' }}>{`You caught a ${pokemon.name}!`}</div>
-      )}
+      <p style={{ color: 'green', minHeight: '20px' }}>
+        {captured && `You caught a ${pokemon.name}!`}
+      </p>
       {pokemonInfo(pokemon)}
     </>
   );
