@@ -1,9 +1,9 @@
-import React, { useRef, useEffect, useContext } from 'react';
-import { LogContext } from '../lib/LogContext';
+import React, { useRef, useEffect } from 'react';
+import { useLogs } from '../lib/LogContext';
 const LOG_SIZE = 20;
 
 const Logs = () => {
-  const { logs } = useContext(LogContext);
+  const { logs } = useLogs();
   const recentLogs = logs.slice(0, LOG_SIZE);
   const containerRef = useRef(null);
 

@@ -10,16 +10,18 @@ import Login from './components/Login';
 import Logs from './components/Logs';
 import Navbar from './components/Navbar';
 import Register from './components/Register';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 const queryClient = new QueryClient();
 
 const AppLayout = () => {
   return (
-    <>
+    <div style={{ margin: 'auto', maxWidth: '600px' }}>
       <Navbar />
       <Outlet />
-    </>
+      <Logs />
+    </div>
   );
 };
 
@@ -29,15 +31,27 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <CatchPokemon />,
+        element: (
+          <ProtectedRoute>
+            <CatchPokemon />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/captured',
-        element: <CapturedPokemon />,
+        element: (
+          <ProtectedRoute>
+            <CapturedPokemon />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/captured/:id',
-        element: <CapturedPokemonDetails />,
+        element: (
+          <ProtectedRoute>
+            <CapturedPokemonDetails />
+          </ProtectedRoute>
+        ),
       },
       {
         path: '/login',
@@ -54,14 +68,13 @@ const router = createBrowserRouter([
 const App = () => {
   return (
     <React.StrictMode>
-      <AuthProvider>
-        <LogProvider>
+      <LogProvider>
+        <AuthProvider>
           <QueryClientProvider client={queryClient}>
             <RouterProvider router={router} />
-            <Logs />
           </QueryClientProvider>
-        </LogProvider>
-      </AuthProvider>
+        </AuthProvider>
+      </LogProvider>
     </React.StrictMode>
   );
 };

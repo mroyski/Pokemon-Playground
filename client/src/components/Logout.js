@@ -1,17 +1,20 @@
-import { useContext } from 'react';
-import { LogContext } from '../lib/LogContext';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../lib/AuthContext';
 
 const Logout = () => {
-  const { setLogs } = useContext(LogContext);
-  const logout = () => {
-    setLogs([]);
-    localStorage.removeItem('token');
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
   };
 
   return (
     <button>
-      <Link onClick={logout} to="/login" style={{ textDecoration: 'none' }}>
+      <Link
+        onClick={handleLogout}
+        to="/login"
+        style={{ textDecoration: 'none' }}
+      >
         Logout
       </Link>
     </button>

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../lib/AuthContext';
 
 const CapturedPokemon = () => {
   const [pokemon, setPokemon] = useState([]);
-  const [username, setUsername] = useState();
+  const { user } = useAuth();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -16,13 +17,12 @@ const CapturedPokemon = () => {
       .then((res) => res.json())
       .then((data) => {
         setPokemon(data.pokemon);
-        setUsername(data.username);
       });
   }, []);
 
   return (
     <>
-      <h1>{`${username}'s Pokemon`}</h1>
+      <h1>{`${user}'s Pokemon`}</h1>
       <h2>Count: {pokemon.length}</h2>
       <ul>
         {pokemon.map((item) => {

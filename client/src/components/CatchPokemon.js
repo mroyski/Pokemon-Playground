@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useFindPokemon } from '../lib/hooks';
-import { LogContext } from '../lib/LogContext';
+import { useLogs } from '../lib/LogContext';
 
 /*
     1. click button to trigger a pokemon to spawn - DONE
@@ -44,7 +44,8 @@ const CatchPokemon = () => {
   const [randomId, setRandomId] = useState();
   const [captured, setCaptured] = useState(false);
   const { data: pokemon, refetch } = useFindPokemon(randomId);
-  const { setLogs } = useContext(LogContext);
+  // const { setLogs } = useContext(LogContext);
+  const { addCapturedLog } = useLogs();
 
   useEffect(() => {
     if (randomId) refetch();
@@ -55,7 +56,7 @@ const CatchPokemon = () => {
     setCaptured(false);
   };
 
-  const catchPokemon = () => {
+  const handleCatchPokemon = () => {
     if (!pokemon) {
       alert('Find a Pokemon to catch!');
       return;
@@ -82,18 +83,13 @@ const CatchPokemon = () => {
 
     fetch('/api/pokemon/catch', options)
       .then(setCaptured(true))
-      .then(
-        setLogs((prevLogs) => [
-          { timestamp: Date.now(), data: `caught a ${pokemon.name}!` },
-          ...prevLogs.slice(0, 5),
-        ])
-      );
+      .then(addCapturedLog(pokemon.name));
   };
 
   return (
     <>
       <button onClick={handleFindPokemon}>Find Pokemon</button>
-      <button onClick={catchPokemon}>Throw Pokeball</button>
+      <button onClick={handleCatchPokemon}>Throw Pokeball</button>
       <p style={{ color: 'green', minHeight: '20px' }}>
         {captured && `You caught a ${pokemon.name}!`}
       </p>

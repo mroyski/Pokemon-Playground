@@ -1,45 +1,26 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
+import { useAuth } from '../lib/AuthContext';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
+  const { login } = useAuth();
 
-  const login = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    };
-
-    try {
-      const response = await fetch('/api/auth/login', options);
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message);
-      }
-      setErrorMessage(null);
-      const data = await response.json();
-      localStorage.setItem('token', data.token);
-      setLoggedIn(true);
-    } catch (error) {
-      setErrorMessage(error.message);
-    }
+    const { success, error } = await login({ username, password });
+    if (success) setLoggedIn(true);
+    else setErrorMessage(error);
   };
 
   return (
     <>
       <h1>Login</h1>
-      {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
-      <form onSubmit={login}>
+      <p style={{ color: 'red', minHeight: '20px' }}>{errorMessage}</p>
+      <form onSubmit={handleSubmit}>
         <input
           placeholder="username"
           onChange={(e) => setUsername(e.target.value)}
