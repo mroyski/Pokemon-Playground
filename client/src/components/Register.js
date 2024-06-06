@@ -36,7 +36,7 @@ const Register = () => {
   return (
     <>
       <h1>Register</h1>
-      {errorMessage && <div style={{ color: 'red' }}>{errorMessage}</div>}
+      <p style={{ color: 'red', minHeight: '20px' }}>{errorMessage}</p>
       <form onSubmit={register}>
         <input
           placeholder="username"
