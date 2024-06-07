@@ -18,11 +18,7 @@ const PORT = process.env.PORT || 8080;
 let args = new Args();
 
 if (args.get('in-memory-db')) {
-  connectInMemory()
-    .then(seed())
-    .catch((error) => {
-      console.log(error);
-    });
+  connectInMemory();
 } else connect();
 
 app.listen(PORT, () => console.log('Server started'));

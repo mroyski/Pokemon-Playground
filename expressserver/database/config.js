@@ -13,7 +13,7 @@ const connectInMemory = async () => {
   const mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
 
-  await mongoose.connect(mongoUri, { dbName: 'pokemonDb' });
+  await mongoose.connect(mongoUri, { dbName: 'pokemonDb' }).then(seed());
   console.log(`MongoDB successfully connected to ${mongoUri}`);
 
   // stop running MongoMemoryServer on restarts with nodemon
