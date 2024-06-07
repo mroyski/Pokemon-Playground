@@ -19,7 +19,7 @@ const CapturedPokemonDetails = () => {
       .then((data) => {
         setPokemon(data);
       });
-  }, [id]);
+  }, [id, token]);
 
   const handleRelease = async () => {
     try {
