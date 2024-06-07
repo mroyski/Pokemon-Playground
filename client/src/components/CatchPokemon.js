@@ -17,7 +17,7 @@ const randomPokemonNumber = () => {
   return Math.floor(Math.random() * 150 + 1);
 };
 
-const pokemonInfo = (pokemon) => {
+const pokemonInfo = (pokemon, captured) => {
   if (!pokemon) {
     return (
       <ul>
@@ -30,11 +30,20 @@ const pokemonInfo = (pokemon) => {
       </ul>
     );
   }
+
   const pokemonTypes = pokemon.types.map((t) => t.type.name).join('/');
 
   return (
     <ul>
-      <img src={pokemon.sprites.front_default} alt={pokemon.name} />
+      <img
+        style={{ width: '96px' }}
+        src={
+          captured
+            ? 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png'
+            : pokemon.sprites.front_default
+        }
+        alt={pokemon.name}
+      />
       <li>{pokemon.name}</li>
       <li>{pokemonTypes}</li>
     </ul>
@@ -94,7 +103,7 @@ const CatchPokemon = () => {
       })
       .then(setCaptured(true))
       .then(addCapturedLog(pokemon.name))
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -106,7 +115,7 @@ const CatchPokemon = () => {
       <p style={{ color: 'green', minHeight: '20px' }}>
         {captured && `You caught a ${pokemon.name}!`}
       </p>
-      {pokemonInfo(pokemon)}
+      {pokemonInfo(pokemon, captured)}
     </>
   );
 };

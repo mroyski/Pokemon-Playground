@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app",
+    "dev-in-memory-db": "nodemon app --in-memory-db",
     "start": "node app",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,9 +15,11 @@
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
+    "dotenv-flow": "^4.1.0",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.4.0"
+    "mongoose": "^8.4.0",
+    "pixl-args": "^1.0.6"
   },
   "devDependencies": {
     "mongodb-memory-server": "^9.2.0",
