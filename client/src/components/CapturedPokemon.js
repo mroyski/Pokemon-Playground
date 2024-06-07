@@ -4,10 +4,9 @@ import { useAuth } from '../lib/AuthContext';
 
 const CapturedPokemon = () => {
   const [pokemon, setPokemon] = useState([]);
-  const { user } = useAuth();
+  const { user, token } = useAuth();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
     fetch('/api/pokemon/captured', {
       headers: {
         'Content-Type': 'application/json',
@@ -17,8 +16,11 @@ const CapturedPokemon = () => {
       .then((res) => res.json())
       .then((data) => {
         setPokemon(data.pokemon);
+      })
+      .catch((error) => {
+        // console.error(error);
       });
-  }, []);
+  }, [token]);
 
   return (
     <>

@@ -39,7 +39,6 @@ const CapturedPokemonDetails = () => {
       setReleased(true);
     } catch (error) {
       console.log(error);
-      return { success: false, error: error.message };
     }
   };
 
