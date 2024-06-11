@@ -77,23 +77,27 @@ describe('AuthRouter', () => {
       );
     });
 
-    // it('should return 400 for invalid password', async () => {
-    //   const mockUser = {
-    //     username: 'testuser',
-    //     verifyPassword: sinon.stub().resolves(false),
-    //   };
-    //   sandbox.stub(User, 'findOne').resolves(mockUser);
+    it('should return 400 for invalid password', async () => {
+      const username = 'testuser';
+      const password = 'testpassword';
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const wrongpassword = 'wrongpassword'
 
-    //   const res = await supertest(app)
-    //     .post('/auth/login')
-    //     .send({ username: 'testuser', password: 'wrongpassword' });
+      await new User({
+        username: username,
+        password: hashedPassword,
+      }).save();
 
-    //   expect(res.status).to.equal(400);
-    //   expect(res.body).to.have.property(
-    //     'message',
-    //     'Invalid username or password'
-    //   );
-    // });
+      const res = await supertest(app)
+        .post('/auth/login')
+        .send({ username: username, password: wrongpassword });
+
+      expect(res.status).to.equal(400);
+      expect(res.body).to.have.property(
+        'message',
+        'Invalid username or password'
+      );
+    });
 
     // it('should return 500 for internal server error', async () => {
     //   sandbox.stub(User, 'findOne').rejects(new Error('DB error'));
