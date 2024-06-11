@@ -62,19 +62,20 @@ describe('AuthRouter', () => {
       expect(res.body).to.have.property('username', username);
     });
 
-    // it('should return 400 for invalid username', async () => {
-    //   sandbox.stub(User, 'findOne').resolves(null);
+    it('should return 400 for invalid username', async () => {
+      const username = 'invaliduser';
+      const password = 'invalidpassword';
 
-    //   const res = await supertest(app)
-    //     .post('/auth/login')
-    //     .send({ username: 'invaliduser', password: 'password123' });
+      const res = await supertest(app)
+        .post('/auth/login')
+        .send({ username: username, password: password });
 
-    //   expect(res.status).to.equal(400);
-    //   expect(res.body).to.have.property(
-    //     'message',
-    //     'Invalid username or password'
-    //   );
-    // });
+      expect(res.status).to.equal(400);
+      expect(res.body).to.have.property(
+        'message',
+        'Invalid username or password'
+      );
+    });
 
     // it('should return 400 for invalid password', async () => {
     //   const mockUser = {
