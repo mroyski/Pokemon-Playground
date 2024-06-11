@@ -20,7 +20,7 @@ const randomPokemonNumber = () => {
 const pokemonInfo = (pokemon, captured) => {
   if (!pokemon) {
     return (
-      <ul>
+      <ul style={{ listStyleType: 'none' }}>
         <img
           src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png"
           alt="no-pokemon"
@@ -34,7 +34,7 @@ const pokemonInfo = (pokemon, captured) => {
   const pokemonTypes = pokemon.types.map((t) => t.type.name).join('/');
 
   return (
-    <ul>
+    <ul style={{ listStyleType: 'none' }}>
       <img
         style={{ width: '96px' }}
         src={
@@ -96,7 +96,6 @@ const CatchPokemon = () => {
     fetch('/api/pokemon/catch', options)
       .then((res) => {
         if (res.status === 403) {
-          console.log(res.status);
           logout();
           throw new Error('Unauthorized');
         }

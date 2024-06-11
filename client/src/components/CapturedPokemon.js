@@ -4,7 +4,7 @@ import { useAuth } from '../lib/AuthContext';
 
 const CapturedPokemon = () => {
   const [pokemon, setPokemon] = useState([]);
-  const { user, token } = useAuth();
+  const { user, token, logout } = useAuth();
 
   useEffect(() => {
     fetch('/api/pokemon/captured', {
@@ -13,20 +13,23 @@ const CapturedPokemon = () => {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === 403) return logout('token expired');
+        return res.json();
+      })
       .then((data) => {
         setPokemon(data.pokemon);
       })
       .catch((error) => {
-        // console.error(error);
+        console.error(error);
       });
-  }, [token]);
+  }, [token, logout]);
 
   return (
     <>
       <h1>{`${user}'s Pokemon`}</h1>
       <h2>Count: {pokemon.length}</h2>
-      <ul>
+      <ul style={{ listStyleType: 'none' }}>
         {pokemon.map((item) => {
           return (
             <li key={item.id || item._id}>
