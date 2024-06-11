@@ -5,6 +5,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon app",
+    "dev-in-memory-db": "nodemon app --in-memory-db",
     "start": "node app",
     "test": "NODE_ENV=test mocha 'test/**/*.test.js'"
   },
@@ -22,7 +23,8 @@
     "mongoose": "^8.4.0",
     "sinon": "^18.0.0",
     "sinon-chai": "^3.7.0",
-    "supertest": "^7.0.0"
+    "supertest": "^7.0.0",
+    "pixl-args": "^1.0.6"
   },
   "devDependencies": {
     "mongodb-memory-server": "^9.2.0",

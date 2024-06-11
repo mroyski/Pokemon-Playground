@@ -1,8 +1,9 @@
-require('dotenv').config();
+require('dotenv-flow').config();
 
+const Args = require('pixl-args');
 const AuthRouter = require('./routes/auth.js');
 const PokemonRouter = require('./routes/pokemon.js');
-const { connect, seed } = require('./database/config.js');
+const { connect, connectInMemory, seed } = require('./database/config.js');
 const express = require('express');
 const app = express();
 
@@ -14,10 +15,10 @@ app.use('/api/auth', AuthRouter);
 
 const PORT = process.env.PORT || 8080;
 
-connect()
-  .then(seed())
-  .catch((error) => {
-    console.log(error);
-  });
+let args = new Args();
+
+if (args.get('in-memory-db')) {
+  connectInMemory();
+} else connect();
 
 app.listen(PORT, () => console.log('Server started'));

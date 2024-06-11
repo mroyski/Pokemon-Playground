@@ -1,13 +1,19 @@
+require('dotenv-flow').config();
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
 const Pokemon = require('../models/pokemon');
 const User = require('../models/user');
 
 const connect = async () => {
+  mongoose.set('strictQuery', false);
+  await mongoose.connect(process.env.MONGODB_CONNECTION_STRING);
+};
+
+const connectInMemory = async () => {
   const mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
 
-  await mongoose.connect(mongoUri, { dbName: 'pokemonDb' });
+  await mongoose.connect(mongoUri, { dbName: 'pokemonDb' }).then(seed());
   console.log(`MongoDB successfully connected to ${mongoUri}`);
 
   // stop running MongoMemoryServer on restarts with nodemon
@@ -48,4 +54,4 @@ const seed = async () => {
   await pokemon2.save();
 };
 
-module.exports = { connect, seed };
+module.exports = { connect, connectInMemory, seed };

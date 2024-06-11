@@ -29,7 +29,7 @@ PokemonRouter.get('/captured', verifyToken, async (req, res) => {
       res.json({ pokemon: pokemon, username: req.user.username });
     })
     .catch((error) => {
-      res.json(error);
+      res.json({ error });
     });
 });
 
@@ -58,6 +58,19 @@ PokemonRouter.post('/catch', verifyToken, async (req, res) => {
 
     await pokemon.save();
     res.json(pokemon);
+  } catch (error) {
+    res.json({ error });
+  }
+});
+
+// Delete a Captured Pokemon
+PokemonRouter.delete('/delete/:id', verifyToken, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    Pokemon.deleteOne({ _id: id }).then(
+      res.status(200).send({ deleted: true })
+    );
   } catch (error) {
     res.json({ error });
   }

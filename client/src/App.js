@@ -17,7 +17,7 @@ const queryClient = new QueryClient();
 
 const AppLayout = () => {
   return (
-    <div style={{ margin: 'auto', maxWidth: '600px' }}>
+    <div style={{ margin: 'auto', maxWidth: '550px' }}>
       <Navbar />
       <Outlet />
       <Logs />

@@ -2,13 +2,11 @@ import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useLogs } from './LogContext';
 import { useLocalStorage } from './hooks';
 
-// TODO: use useLocalStorage for handling localstorage operations
-
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState();
-  const [token, setToken] = useState();
+  const [user, setUser] = useLocalStorage('user', null);
+  const [token, setToken] = useLocalStorage('token', null);
   const [loaded, setLoaded] = useState(false);
   const { clearLogs } = useLogs();
 
@@ -40,8 +38,6 @@ export const AuthProvider = ({ children }) => {
       }
       clearLogs();
       const data = await response.json();
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', data.username);
       setUser(data.username);
       setToken(data.token);
       return { success: true };
@@ -52,10 +48,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    setUser(null);
     setToken(null);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
+    setUser(null);
     clearLogs();
   };
 
