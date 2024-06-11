@@ -58,6 +58,12 @@ $ npm run dev-in-memory-db
 
 - The server is accessible at http://localhost:8080
 
+#### Tests
+
+```console
+$ npm test
+```
+
 ### .NET Server (WIP)
 
 - Open a terminal and navigate to the client folder
