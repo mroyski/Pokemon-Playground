@@ -44,8 +44,8 @@ describe('AuthRouter', () => {
 
   describe('POST /auth/login', () => {
     it('should return a token for valid credentials', async () => {
-      const username = 'testuser';
-      const password = 'testpassword';
+      const username = randomstring.generate(10);
+      const password = randomstring.generate(10);
       const hashedPassword = await bcrypt.hash(password, 10);
 
       await new User({
@@ -63,8 +63,8 @@ describe('AuthRouter', () => {
     });
 
     it('should return 400 for invalid username', async () => {
-      const username = 'invaliduser';
-      const password = 'invalidpassword';
+      const username = randomstring.generate(10);
+      const password = randomstring.generate(10);
 
       const res = await supertest(app)
         .post('/auth/login')
@@ -78,10 +78,10 @@ describe('AuthRouter', () => {
     });
 
     it('should return 400 for invalid password', async () => {
-      const username = 'testuser';
-      const password = 'testpassword';
+      const username = randomstring.generate(10);
+      const password = randomstring.generate(10);
       const hashedPassword = await bcrypt.hash(password, 10);
-      const wrongpassword = 'wrongpassword';
+      const wrongpassword = randomstring.generate(10);
 
       await new User({
         username: username,
@@ -125,30 +125,34 @@ describe('AuthRouter', () => {
         'User registered successfully'
       );
       expect(res.body).to.have.property('user');
-      const user = await User.findOne({username: username})
+      const user = await User.findOne({ username: username });
       expect(user).to.not.be.null;
     });
 
-    //   it('should return 400 for existing username', async () => {
-    //     sandbox.stub(User, 'findOne').resolves({ username: 'existinguser' });
+    it('should return 400 for existing username', async () => {
+      const username = randomstring.generate(10);
+      const password = randomstring.generate(10);
+      const hashedPassword = await bcrypt.hash(password, 10);
 
-    //     const res = await supertest(app)
-    //       .post('/auth/register')
-    //       .send({ username: 'existinguser', password: 'password123' });
+      await new User({ username: username, password: hashedPassword }).save();
 
-    //     expect(res.status).to.equal(400);
-    //     expect(res.body).to.have.property('message', 'Username already taken');
-    //   });
+      const res = await supertest(app)
+        .post('/auth/register')
+        .send({ username: username, password: 'password123' });
 
-    //   it('should return 500 for internal server error', async () => {
-    //     sandbox.stub(User, 'findOne').rejects(new Error('DB error'));
+      expect(res.status).to.equal(400);
+      expect(res.body).to.have.property('message', 'Username already taken');
+    });
 
-    //     const res = await supertest(app)
-    //       .post('/auth/register')
-    //       .send({ username: 'newuser', password: 'password123' });
+      it('should return 500 for internal server error', async () => {
+        sandbox.stub(User, 'findOne').rejects(new Error('DB error'));
 
-    //     expect(res.status).to.equal(500);
-    //     expect(res.body).to.have.property('message', 'Internal server error');
-    //   });
+        const res = await supertest(app)
+          .post('/auth/register')
+          .send({ username: 'newuser', password: 'password123' });
+
+        expect(res.status).to.equal(500);
+        expect(res.body).to.have.property('message', 'Internal server error');
+      });
   });
 });
