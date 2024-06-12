@@ -9,9 +9,7 @@ const randomstring = require('randomstring');
 const Pokemon = require('../../models/pokemon.js');
 const User = require('../../models/user.js');
 const PokemonRouter = require('../../routes/pokemon.js');
-const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 const { JsonWebTokenError } = require('jsonwebtoken');
 
 chai.use(sinonChai);
@@ -21,22 +19,15 @@ const app = express();
 app.use(express.json());
 app.use('/pokemon', PokemonRouter);
 
-let mongoServer;
-
 describe('PokemonRouter', () => {
   let sandbox;
 
   beforeEach(async () => {
     sandbox = sinon.createSandbox();
-    mongoServer = await MongoMemoryServer.create();
-    const mongoUri = mongoServer.getUri();
-    await mongoose.connect(mongoUri);
   });
 
   afterEach(async () => {
     sandbox.restore();
-    await mongoose.disconnect();
-    await mongoServer.stop();
   });
 
   describe('GET /pokemon/captured', () => {

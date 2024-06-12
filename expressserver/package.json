@@ -7,7 +7,7 @@
     "dev": "nodemon app",
     "dev-in-memory-db": "nodemon app --in-memory-db",
     "start": "node app",
-    "test": "NODE_ENV=test mocha 'test/**/*.test.js'"
+    "test": "NODE_ENV=test mocha 'test/**/*.test.js' --require 'test/hooks.js'"
   },
   "author": "",
   "license": "ISC",

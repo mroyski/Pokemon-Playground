@@ -8,7 +8,6 @@ const bcrypt = require('bcrypt');
 const randomstring = require('randomstring');
 const User = require('../../models/user.js');
 const AuthRouter = require('../../routes/auth.js');
-const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
 chai.use(sinonChai);
@@ -18,22 +17,16 @@ const app = express();
 app.use(express.json());
 app.use('/auth', AuthRouter);
 
-let mongoServer;
 
 describe('AuthRouter', () => {
   let sandbox;
 
   beforeEach(async () => {
     sandbox = sinon.createSandbox();
-    mongoServer = await MongoMemoryServer.create();
-    const mongoUri = mongoServer.getUri();
-    await mongoose.connect(mongoUri);
   });
 
   afterEach(async () => {
     sandbox.restore();
-    await mongoose.disconnect();
-    await mongoServer.stop();
   });
 
   describe('POST /auth/login', () => {
