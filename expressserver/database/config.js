@@ -18,8 +18,8 @@ const connectInMemory = async () => {
 
   // stop running MongoMemoryServer on restarts with nodemon
   process.once('SIGUSR2', async () => {
-    await mongoServer.stop();
     await mongoose.disconnect();
+    await mongoServer.stop();
     process.kill(process.pid, 'SIGUSR2');
   });
 };

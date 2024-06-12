@@ -20,26 +20,20 @@ app.use('/auth', AuthRouter);
 
 let mongoServer;
 
-before(async () => {
-  mongoServer = await MongoMemoryServer.create();
-  const mongoUri = mongoServer.getUri();
-  await mongoose.connect(mongoUri);
-});
-
-after(async () => {
-  await mongoose.disconnect();
-  await mongoServer.stop();
-});
-
 describe('AuthRouter', () => {
   let sandbox;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     sandbox = sinon.createSandbox();
+    mongoServer = await MongoMemoryServer.create();
+    const mongoUri = mongoServer.getUri();
+    await mongoose.connect(mongoUri);
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     sandbox.restore();
+    await mongoose.disconnect();
+    await mongoServer.stop();
   });
 
   describe('POST /auth/login', () => {
@@ -144,15 +138,15 @@ describe('AuthRouter', () => {
       expect(res.body).to.have.property('message', 'Username already taken');
     });
 
-      it('should return 500 for internal server error', async () => {
-        sandbox.stub(User, 'findOne').rejects(new Error('DB error'));
+    it('should return 500 for internal server error', async () => {
+      sandbox.stub(User, 'findOne').rejects(new Error('DB error'));
 
-        const res = await supertest(app)
-          .post('/auth/register')
-          .send({ username: 'newuser', password: 'password123' });
+      const res = await supertest(app)
+        .post('/auth/register')
+        .send({ username: 'newuser', password: 'password123' });
 
-        expect(res.status).to.equal(500);
-        expect(res.body).to.have.property('message', 'Internal server error');
-      });
+      expect(res.status).to.equal(500);
+      expect(res.body).to.have.property('message', 'Internal server error');
+    });
   });
 });
