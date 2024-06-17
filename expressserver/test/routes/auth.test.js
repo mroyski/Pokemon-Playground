@@ -8,7 +8,6 @@ const bcrypt = require('bcrypt');
 const randomstring = require('randomstring');
 const User = require('../../models/user.js');
 const AuthRouter = require('../../routes/auth.js');
-const { MongoMemoryServer } = require('mongodb-memory-server');
 
 chai.use(sinonChai);
 const expect = chai.expect;
