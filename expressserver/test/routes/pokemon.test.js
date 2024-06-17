@@ -17,15 +17,8 @@ app.use(express.json());
 app.use('/pokemon', PokemonRouter);
 
 describe('PokemonRouter', () => {
-  let sandbox;
-
-  beforeEach(async () => {
-    sandbox = sinon.createSandbox();
-  });
-
   afterEach(async () => {
     sinon.restore();
-    sandbox.restore();
   });
 
   describe('GET /pokemon/captured', () => {
