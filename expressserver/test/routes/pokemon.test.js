@@ -108,4 +108,33 @@ describe('PokemonRouter', () => {
       expect(usersPokemon.length).to.equal(1);
     });
   });
+
+  describe('GET /pokemon/delete/:id', () => {
+    it('should add pokemon to users list of captured pokemon', async () => {
+      const user = await buildUser();
+
+      const pokemonToDelete = await new Pokemon({
+        pokedexId: '1',
+        name: 'bulbasaur',
+        sprite: 'bulbasaur_sprite_url',
+        user: user,
+      }).save();
+
+      sinon.stub(jwt, 'verify').callsFake((token, secret, callback) => {
+        callback(null, { user: user });
+      });
+
+      let usersPokemon = await Pokemon.find({ user: user });
+      expect(usersPokemon.length).to.equal(1);
+
+      await supertest(app)
+        .delete(`/pokemon/delete/${pokemonToDelete.id}`)
+        .set('Authorization', 'Bearer mockToken')
+        .send()
+        .expect(200);
+
+      usersPokemon = await Pokemon.find({ user: user });
+      expect(usersPokemon).to.be.empty;
+    });
+  });
 });
