@@ -81,4 +81,31 @@ describe('PokemonRouter', () => {
       expect(res.body._id).to.equal(captured.id);
     });
   });
+
+  describe('GET /pokemon/catch', () => {
+    it('should add pokemon to users list of captured pokemon', async () => {
+      const user = await buildUser();
+
+      sinon.stub(jwt, 'verify').callsFake((token, secret, callback) => {
+        callback(null, { user: user });
+      });
+
+      let usersPokemon = await Pokemon.find({ user: user });
+      expect(usersPokemon).to.be.empty;
+
+      await supertest(app)
+        .post('/pokemon/catch')
+        .set('Authorization', 'Bearer mockToken')
+        .send({
+          pokedexId: '1',
+          name: 'bulbasaur',
+          sprite: 'bulbasaur_sprite_url',
+          user: user,
+        })
+        .expect(200);
+
+      usersPokemon = await Pokemon.find({ user: user });
+      expect(usersPokemon.length).to.equal(1);
+    });
+  });
 });
