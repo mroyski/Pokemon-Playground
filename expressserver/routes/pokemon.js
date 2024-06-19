@@ -1,9 +1,6 @@
-const axios = require('axios');
 const PokemonRouter = require('express').Router();
 const Pokemon = require('../models/pokemon.js');
 const jwt = require('jsonwebtoken');
-
-const POKEMON_API_URL = process.env.POKEMON_API_URL;
 
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
