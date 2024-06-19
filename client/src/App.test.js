@@ -7,8 +7,12 @@ import { LogProvider } from './lib/LogContext';
 import App, { routes } from './App';
 
 // Mock components
-jest.mock('./components/CapturedPokemon', () => () => <div>Captured Pokemon</div>);
-jest.mock('./components/CapturedPokemonDetails', () => () => <div>Captured Pokemon Details</div>);
+jest.mock('./components/CapturedPokemon', () => () => (
+  <div>Captured Pokemon</div>
+));
+jest.mock('./components/CapturedPokemonDetails', () => () => (
+  <div>Captured Pokemon Details</div>
+));
 jest.mock('./components/CatchPokemon', () => () => <div>Catch Pokemon</div>);
 jest.mock('./components/Login', () => () => <div>Login</div>);
 jest.mock('./components/Register', () => () => <div>Register</div>);
@@ -42,7 +46,11 @@ const renderWithProviders = (ui, { route = '/' } = {}) => {
 describe('App component', () => {
   beforeEach(() => {
     // Default mock implementation
-    useAuth.mockReturnValue({ loaded: true, token: 'fake-token', user: { name: 'John Doe' } });
+    useAuth.mockReturnValue({
+      loaded: true,
+      token: 'fake-token',
+      user: { name: 'testuser' },
+    });
   });
 
   test('renders Navbar and Logs by default', () => {
@@ -52,59 +60,73 @@ describe('App component', () => {
     expect(screen.getByText('Logs')).toBeInTheDocument();
   });
 
-//   test('renders CatchPokemon component for / route when authenticated', async () => {
-//     renderWithProviders(<App />, { route: '/' });
+  test('renders CatchPokemon component for / route when authenticated', async () => {
+    renderWithProviders(<App />, { route: '/' });
 
-//     await waitFor(() => {
-//       screen.debug(); // Debugging line to show current state of rendered DOM
-//       expect(screen.getByText('Catch Pokemon')).toBeInTheDocument();
-//     });
-//   });
+    await waitFor(() => {
+      expect(screen.getByText('Catch Pokemon')).toBeInTheDocument();
+    });
+  });
 
-//   test('renders CapturedPokemon component for /captured route when authenticated', async () => {
-//     renderWithProviders(<App />, { route: '/captured' });
+  test('renders CapturedPokemon component for /captured route when authenticated', async () => {
+    renderWithProviders(<App />, { route: '/captured' });
 
-//     await waitFor(() => {
-//       screen.debug(); // Debugging line to show current state of rendered DOM
-//       expect(screen.getByText('Captured Pokemon')).toBeInTheDocument();
-//     });
-//   });
+    await waitFor(() => {
+      expect(screen.getByText('Captured Pokemon')).toBeInTheDocument();
+    });
+  });
 
-//   test('renders CapturedPokemonDetails component for /captured/:id route when authenticated', async () => {
-//     renderWithProviders(<App />, { route: '/captured/1' });
+  test('renders CapturedPokemonDetails component for /captured/:id route when authenticated', async () => {
+    renderWithProviders(<App />, { route: '/captured/1' });
 
-//     await waitFor(() => {
-//       screen.debug(); // Debugging line to show current state of rendered DOM
-//       expect(screen.getByText('Captured Pokemon Details')).toBeInTheDocument();
-//     });
-//   });
+    await waitFor(() => {
+      expect(screen.getByText('Captured Pokemon Details')).toBeInTheDocument();
+    });
+  });
 
-//   test('redirects to login for protected routes when not authenticated', async () => {
-//     useAuth.mockReturnValue({ loaded: true, token: null, user: null });
+  test('redirects to login for protected routes when not authenticated', async () => {
+    useAuth.mockReturnValue({ loaded: true, token: null, user: null });
 
-//     renderWithProviders(<App />, { route: '/' });
+    renderWithProviders(<App />, { route: '/' });
 
-//     await waitFor(() => {
-//       screen.debug(); // Debugging line to show current state of rendered DOM
-//       expect(screen.getByText('Login')).toBeInTheDocument();
-//     });
-//   });
+    await waitFor(() => {
+      expect(screen.getByText('Login')).toBeInTheDocument();
+    });
+  });
 
-//   test('renders Login component for /login route', async () => {
-//     renderWithProviders(<App />, { route: '/login' });
+  test('redirects to login for /captured route when not authenticated', async () => {
+    useAuth.mockReturnValue({ loaded: true, token: null, user: null });
 
-//     await waitFor(() => {
-//       screen.debug(); // Debugging line to show current state of rendered DOM
-//       expect(screen.getByText('Login')).toBeInTheDocument();
-//     });
-//   });
+    renderWithProviders(<App />, { route: '/captured' });
 
-//   test('renders Register component for /register route', async () => {
-//     renderWithProviders(<App />, { route: '/register' });
+    await waitFor(() => {
+      expect(screen.getByText('Login')).toBeInTheDocument();
+    });
+  });
 
-//     await waitFor(() => {
-//       screen.debug(); // Debugging line to show current state of rendered DOM
-//       expect(screen.getByText('Register')).toBeInTheDocument();
-//     });
-//   });
+  test('redirects to login for /captured/:id route when not authenticated', async () => {
+    useAuth.mockReturnValue({ loaded: true, token: null, user: null });
+
+    renderWithProviders(<App />, { route: '/captured/1' });
+
+    await waitFor(() => {
+      expect(screen.getByText('Login')).toBeInTheDocument();
+    });
+  });
+
+  test('renders Login component for /login route', async () => {
+    renderWithProviders(<App />, { route: '/login' });
+
+    await waitFor(() => {
+      expect(screen.getByText('Login')).toBeInTheDocument();
+    });
+  });
+
+  test('renders Register component for /register route', async () => {
+    renderWithProviders(<App />, { route: '/register' });
+
+    await waitFor(() => {
+      expect(screen.getByText('Register')).toBeInTheDocument();
+    });
+  });
 });
