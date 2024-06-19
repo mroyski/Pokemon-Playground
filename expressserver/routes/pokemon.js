@@ -76,24 +76,4 @@ PokemonRouter.delete('/delete/:id', verifyToken, async (req, res) => {
   }
 });
 
-// // Get Pokemon details via external API
-// PokemonRouter.get('/:id', async (req, res) => {
-//   const { id } = req.params;
-
-//   try {
-//     const response = await axios.get(`${POKEMON_API_URL}/pokemon/${id}`);
-//     const pokemonData = response.data;
-//     const pokemon = {
-//       name: pokemonData.name,
-//       sprite: pokemonData.sprites.front_default,
-//       stats: pokemonData.stats,
-//     };
-
-//     res.json(pokemon);
-//   } catch (error) {
-//     console.error('Error fetching Pokemon data:', error);
-//     res.status(500).json({ error: 'Failed to fetch Pokemon data' });
-//   }
-// });
-
 module.exports = PokemonRouter;
