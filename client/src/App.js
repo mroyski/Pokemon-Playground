@@ -25,7 +25,7 @@ const AppLayout = () => {
   );
 };
 
-const router = createBrowserRouter([
+const routes = [
   {
     element: <AppLayout />,
     children: [
@@ -63,9 +63,11 @@ const router = createBrowserRouter([
       },
     ],
   },
-]);
+];
 
 const App = () => {
+  const router = createBrowserRouter(routes);
+
   return (
     <React.StrictMode>
       <LogProvider>
@@ -80,3 +82,4 @@ const App = () => {
 };
 
 export default App;
+export { routes }; // Export routes for test use
