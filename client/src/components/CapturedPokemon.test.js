@@ -5,7 +5,6 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { useAuth } from '../lib/AuthContext';
 import CapturedPokemon from './CapturedPokemon';
 
-// Mock useAuth hook
 jest.mock('../lib/AuthContext', () => ({
   useAuth: jest.fn(),
 }));
